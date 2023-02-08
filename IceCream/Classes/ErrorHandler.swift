@@ -72,14 +72,18 @@ struct ErrorHandler {
         case .serverRecordChanged:
             print("ErrorHandler.recoverableError: \(message)")
             return .recoverableError(reason: .serverRecordChanged, message: message)
-        case .partialFailure,
-             .batchRequestFailed:
+        case .partialFailure:
             // Normally it shouldn't happen since if CKOperation `isAtomic` set to true
             if let dictionary = e.userInfo[CKPartialErrorsByItemIDKey] as? NSDictionary {
                 print("ErrorHandler.partialFailure for \(dictionary.count) items; CKPartialErrorsByItemIDKey: \(dictionary)")
             }
             return .recoverableError(reason: .partialFailure, message: message)
-            
+        case .batchRequestFailed:
+          // Normally it shouldn't happen since if CKOperation `isAtomic` set to true
+          if let dictionary = e.userInfo[CKPartialErrorsByItemIDKey] as? NSDictionary {
+            print("ErrorHandler.batchRequestFailed for \(dictionary.count) items; CKPartialErrorsByItemIDKey: \(dictionary)")
+          }
+          return .fail(reason: .unknown, message: message)
         // SHOULD CHUNK IT UP
         case .limitExceeded:
             print("ErrorHandler.Chunk: \(message)")
