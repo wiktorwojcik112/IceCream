@@ -165,7 +165,11 @@ extension CKRecordConvertible where Self: Object {
             case .int, .string, .bool, .date, .float, .double, .data:
                 r[prop.name] = item as? CKRecordValue
             case .UUID:
-                r[prop.name] = (item as! UUID).uuidString as CKRecordValue
+              if let item = item as? UUID {
+                r[prop.name] = item.uuidString as String
+              } else {
+                r[prop.name] = ""
+              }
             case .object:
                 guard let objectName = prop.objectClassName else { break }
                 if objectName == CreamLocation.className(), let creamLocation = item as? CreamLocation {
