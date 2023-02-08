@@ -172,7 +172,7 @@ extension CKRecordRecoverable where Self: Object {
         case .int:
             return Int(recordID.recordName)
         default:
-            fatalError("The type of object primaryKey should be String or Int")
+            fatalError("The type of \(self.className()) object primaryKey should be String or Int")
         }
     }
 }

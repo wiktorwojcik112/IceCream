@@ -50,7 +50,7 @@ extension CKRecordConvertible where Self: Object {
         }
         
         guard let primaryKeyProperty = sharedSchema.primaryKeyProperty else {
-            fatalError("You should set a primary key on your Realm object")
+            fatalError("You should set a primary key on your \(Self.recordType) Realm object")
         }
         
         switch primaryKeyProperty.type {
@@ -77,9 +77,9 @@ extension CKRecordConvertible where Self: Object {
                 assertionFailure("\(primaryKeyProperty.name)'s value should be UUID type")
             }
         default:
-            assertionFailure("Primary key should be String or Int")
+            assertionFailure("Primary key on \(Self.recordType) should be String or Int")
         }
-        fatalError("Should have a reasonable recordID")
+        fatalError("\(Self.recordType) should have a reasonable recordID")
     }
     
     // Simultaneously init CKRecord with zoneID and recordID, thanks to this guy: https://stackoverflow.com/questions/45429133/how-to-initialize-ckrecord-with-both-zoneid-and-recordid
