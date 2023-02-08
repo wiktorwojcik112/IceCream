@@ -96,6 +96,10 @@ extension CKRecordConvertible where Self: Object {
                     guard let list = item as? List<Int>, !list.isEmpty else { break }
                     let array = Array(list)
                     r[prop.name] = array as CKRecordValue
+                case .UUID:
+                  guard let list = item as? List<UUID>, !list.isEmpty else { break }
+                    let array = Array(list).map { $0.uuidString }
+                    r[prop.name] = array as CKRecordValue
                 case .string:
                     guard let list = item as? List<String>, !list.isEmpty else { break }
                     let array = Array(list)
@@ -160,6 +164,8 @@ extension CKRecordConvertible where Self: Object {
             switch prop.type {
             case .int, .string, .bool, .date, .float, .double, .data:
                 r[prop.name] = item as? CKRecordValue
+            case .UUID:
+                r[prop.name] = (item as! UUID).uuidString as CKRecordValue
             case .object:
                 guard let objectName = prop.objectClassName else { break }
                 if objectName == CreamLocation.className(), let creamLocation = item as? CreamLocation {

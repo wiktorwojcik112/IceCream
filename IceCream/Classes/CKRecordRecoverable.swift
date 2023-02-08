@@ -32,6 +32,11 @@ extension CKRecordRecoverable where Self: Object {
                     let list = List<Int>()
                     list.append(objectsIn: value)
                     recordValue = list
+                case .UUID:
+                    guard let value = record.value(forKey: prop.name) as? [String] else { break }
+                    let list = List<UUID>()
+                    list.append(objectsIn: value.map { UUID(uuidString: $0)! })
+                    recordValue = list
                 case .string:
                     guard let value = record.value(forKey: prop.name) as? [String] else { break }
                     let list = List<String>()
@@ -124,6 +129,8 @@ extension CKRecordRecoverable where Self: Object {
                 recordValue = record.value(forKey: prop.name) as? Int
             case .string:
                 recordValue = record.value(forKey: prop.name) as? String
+            case .UUID:
+                recordValue = UUID(uuidString: (record.value(forKey: prop.name) as? String) ?? "")
             case .bool:
                 recordValue = record.value(forKey: prop.name) as? Bool
             case .date:
