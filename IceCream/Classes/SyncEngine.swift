@@ -35,9 +35,14 @@ public final class SyncEngine {
         setup()
     }
   
-    public func createCustomZonesForPrivateDatabase() {
-      let privateDatabase = databaseManager as! PrivateDatabaseManager
-      privateDatabase.createCustomZones()
+    public func reset() {
+        UserDefaults.standard.removeObject(forKey: IceCreamKey.databaseChangesTokenKey.value)
+        UserDefaults.standard.removeObject(forKey: IceCreamKey.subscriptionIsLocallyCachedKey.value)
+        
+        for syncObject in databaseManager.syncObjects {
+            UserDefaults.standard.removeObject(forKey: String(describing: syncObject.self) + IceCreamKey.zoneChangesTokenKey.value)
+            UserDefaults.standard.removeObject(forKey: String(describing: syncObject.self) + IceCreamKey.hasCustomZoneCreatedKey.value)
+        }
     }
     
     private func setup() {

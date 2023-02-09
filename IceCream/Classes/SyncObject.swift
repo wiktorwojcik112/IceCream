@@ -39,6 +39,7 @@ public final class SyncObject<T, U, V, W> where T: Object & CKRecordConvertible 
         self.realmConfiguration = realmConfiguration
     }
     
+  
 }
 
 // MARK: - Zone information
