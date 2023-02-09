@@ -94,7 +94,7 @@
 		6743F715202B0F0F00912163 /* IceCream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IceCream.h; sourceTree = "<group>"; };
 		6743F716202B0F0F00912163 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6743F71E202B0F9400912163 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		6743F720202B0F9400912163 /* ErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		6743F720202B0F9400912163 /* ErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; tabWidth = 4; };
 		6743F722202B0F9400912163 /* Manifest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manifest.swift; sourceTree = "<group>"; };
 		6743F723202B0F9400912163 /* CreamAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreamAsset.swift; sourceTree = "<group>"; };
 		6743F725202B0F9400912163 /* Notification+Name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+Name.swift"; sourceTree = "<group>"; };

@@ -53,6 +53,10 @@ final class PrivateDatabaseManager: DatabaseManager {
                     /// The previousServerChangeToken value is too old and the client must re-sync from scratch
                     self.databaseChangeToken = nil
                     self.fetchChangesInDatabase(callback)
+                case .userDeletedZone:
+                    self.createCustomZones {
+                        self.fetchChangesInDatabase(callback)
+                    }
                 default:
                     return
                 }
@@ -94,7 +98,7 @@ final class PrivateDatabaseManager: DatabaseManager {
         database.add(modifyOp)
     }
     
-    func createCustomZones() {
+    func createCustomZones(_ callback: @escaping (() -> Void)) {
         let zonesToCreate = syncObjects.map { CKRecordZone(zoneID: $0.zoneID) }
         guard zonesToCreate.count > 0 else { return }
         
@@ -112,6 +116,8 @@ final class PrivateDatabaseManager: DatabaseManager {
                         object.pushLocalObjectsToCloudKit()
                     }
                 }
+                
+                callback(error)
             case .retry(let timeToWait, _):
                 ErrorHandler.shared.retryOperationIfPossible(retryAfter: timeToWait, block: {
                     self.createCustomZonesIfAllowed()
@@ -164,7 +170,7 @@ final class PrivateDatabaseManager: DatabaseManager {
         }
     }
     
-    private func fetchChangesInZones(_ callback: ((Error?) -> Void)? = nil) {
+    private func fetchChangesInZones(_ callback: (() -> Void)? = nil) {
         let changesOp = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIds, optionsByRecordZoneID: zoneIdOptions)
         changesOp.fetchAllChanges = true
         
@@ -205,6 +211,10 @@ final class PrivateDatabaseManager: DatabaseManager {
                     guard let syncObject = self.syncObjects.first(where: { $0.zoneID == zoneId }) else { return }
                     syncObject.zoneChangesToken = nil
                     self.fetchChangesInZones(callback)
+                case .userDeletedZone:
+                    self.createCustomZones {
+                        self.fetchChangesInZones(callback)
+                    }
                 default:
                     return
                 }
