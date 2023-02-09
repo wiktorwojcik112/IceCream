@@ -45,6 +45,9 @@ public final class SyncObject<T, U, V, W> where T: Object & CKRecordConvertible 
 // MARK: - Zone information
 
 extension SyncObject: Syncable {
+    public var className: String {
+        return T.className()
+    }
     
     public var recordType: String {
         return T.recordType

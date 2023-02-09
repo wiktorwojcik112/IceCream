@@ -40,8 +40,8 @@ public final class SyncEngine {
         UserDefaults.standard.removeObject(forKey: IceCreamKey.subscriptionIsLocallyCachedKey.value)
         
         for syncObject in databaseManager.syncObjects {
-            UserDefaults.standard.removeObject(forKey: String(describing: syncObject.self) + IceCreamKey.zoneChangesTokenKey.value)
-            UserDefaults.standard.removeObject(forKey: String(describing: syncObject.self) + IceCreamKey.hasCustomZoneCreatedKey.value)
+            UserDefaults.standard.removeObject(forKey: (syncObject as! SyncObject).className + IceCreamKey.zoneChangesTokenKey.value)
+            UserDefaults.standard.removeObject(forKey: (syncObject as! SyncObject).className + IceCreamKey.hasCustomZoneCreatedKey.value)
         }
     }
     
