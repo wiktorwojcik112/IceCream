@@ -34,7 +34,7 @@ extension CKRecordConvertible where Self: Object {
     public static var zoneID: CKRecordZone.ID {
         switch Self.databaseScope {
         case .private:
-            return CKRecordZone.default().zoneID
+            return CKRecordZone.ID(zoneName: "\(recordType)sZone", ownerName: CKCurrentUserDefaultName)
         case .public:
             return CKRecordZone.default().zoneID
         default:
@@ -137,17 +137,17 @@ extension CKRecordConvertible where Self: Object {
                             switch object.objectSchema.primaryKeyProperty?.type {
                             case .string:
                                 if let primaryValueString = object[primaryKey] as? String, let obj = object as? CKRecordConvertible, !obj.isDeleted {
-                                    let referenceZoneID = CKRecordZone.default().zoneID
+                                    let referenceZoneID = CKRecordZone.ID(zoneName: "\(object.objectSchema.className)sZone", ownerName: CKCurrentUserDefaultName)
                                     referenceArray.append(CKRecord.Reference(recordID: CKRecord.ID(recordName: primaryValueString, zoneID: referenceZoneID), action: .none))
                                 }
                             case .int:
                                 if let primaryValueInt = object[primaryKey] as? Int, let obj = object as? CKRecordConvertible, !obj.isDeleted {
-                                    let referenceZoneID = CKRecordZone.default().zoneID
+                                    let referenceZoneID = CKRecordZone.ID(zoneName: "\(object.objectSchema.className)sZone", ownerName: CKCurrentUserDefaultName)
                                     referenceArray.append(CKRecord.Reference(recordID: CKRecord.ID(recordName: "\(primaryValueInt)", zoneID: referenceZoneID), action: .none))
                                 }
                             case .UUID:
                               if let primaryValueUUID = object[primaryKey] as? UUID, let obj = object as? CKRecordConvertible, !obj.isDeleted {
-                                let referenceZoneID = CKRecordZone.default().zoneID
+                                let referenceZoneID = CKRecordZone.ID(zoneName: "\(object.objectSchema.className)sZone", ownerName: CKCurrentUserDefaultName)
                                 referenceArray.append(CKRecord.Reference(recordID: CKRecord.ID(recordName: "\(primaryValueUUID)", zoneID: referenceZoneID), action: .none))
                               }
                             default:
