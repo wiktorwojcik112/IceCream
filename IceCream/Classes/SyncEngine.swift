@@ -35,6 +35,11 @@ public final class SyncEngine {
         setup()
     }
   
+    public func createCustomZonesForPrivateDatabase() {
+      let privateDatabase = databaseManager as! PrivateDatabaseManager
+      privateDatabase.createCustomZones()
+    }
+    
     private func setup() {
         databaseManager.prepare()
         databaseManager.container.accountStatus { [weak self] (status, error) in

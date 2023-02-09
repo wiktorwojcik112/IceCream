@@ -33,7 +33,6 @@ struct ErrorHandler {
         case serverRecordChanged
         case shareRelated
         case unhandledErrorCode
-        case userDeletedZone
         case unknown
     }
     
@@ -70,9 +69,6 @@ struct ErrorHandler {
         case .changeTokenExpired:
             print("ErrorHandler.recoverableError: \(message)")
             return .recoverableError(reason: .changeTokenExpired, message: message)
-        case .userDeletedZone:
-            print("ErrorHandler.recoverableError: \(message)")
-            return .recoverableError(reason: .userDeletedZone, message: message)
         case .serverRecordChanged:
             print("ErrorHandler.recoverableError: \(message)")
             return .recoverableError(reason: .serverRecordChanged, message: message)
