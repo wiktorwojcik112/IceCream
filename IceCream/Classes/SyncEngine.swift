@@ -34,6 +34,11 @@ public final class SyncEngine {
         self.databaseManager = databaseManager
         setup()
     }
+  
+    public func createCustomZonesForPrivateDatabase() {
+      let privateDatabase = databaseManager as! PrivateDatabaseManager
+      privateDatabase.createCustomZones()
+    }
     
     private func setup() {
         databaseManager.prepare()

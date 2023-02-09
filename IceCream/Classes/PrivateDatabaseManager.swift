@@ -94,6 +94,36 @@ final class PrivateDatabaseManager: DatabaseManager {
         database.add(modifyOp)
     }
     
+    func createCustomZones() {
+        let zonesToCreate = syncObjects.map { CKRecordZone(zoneID: $0.zoneID) }
+        guard zonesToCreate.count > 0 else { return }
+        
+        let modifyOp = CKModifyRecordZonesOperation(recordZonesToSave: zonesToCreate, recordZoneIDsToDelete: nil)
+        modifyOp.modifyRecordZonesCompletionBlock = { [weak self](_, _, error) in
+            guard let self = self else { return }
+            switch ErrorHandler.shared.resultType(with: error) {
+            case .success:
+                self.syncObjects.forEach { object in
+                    object.isCustomZoneCreated = true
+                    
+                    // As we register local database in the first step, we have to force push local objects which
+                    // have not been caught to CloudKit to make data in sync
+                    DispatchQueue.main.async {
+                        object.pushLocalObjectsToCloudKit()
+                    }
+                }
+            case .retry(let timeToWait, _):
+                ErrorHandler.shared.retryOperationIfPossible(retryAfter: timeToWait, block: {
+                    self.createCustomZonesIfAllowed()
+                })
+            default:
+                return
+            }
+        }
+        
+        database.add(modifyOp)
+    }
+    
     func createDatabaseSubscriptionIfHaveNot() {
         #if os(iOS) || os(tvOS) || os(macOS)
         guard !subscriptionIsLocallyCached else { return }
